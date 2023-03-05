@@ -1,22 +1,17 @@
-import cv2
-import numpy as np
+import cv2 
 
-images = cv2.imread("camara_\wally.jpg")
-gris = cv2.cvtColor(images,cv2.COLOR_BGR2GRAY)
-template = cv2.imread("camara_\wally2.png",0)
-w , h = template.shape[::-1]
+def abrir():
+    conteo = 0
+    cap = cv2.VideoCapture(0)
+    while (cap.isOpened()):
+        ret,frame = cap.read()
 
-res = cv2.matchTemplate(gris, template, cv2.TM_CCOEFF_NORMED)
+        cv2.imshow("capturas",frame)
+        conteo+=1
+        if cv2.waitKey(1) == ord('q'):
+            break
+    cap.release()
+    cv2.destroyAllWindows()   
 
-umbral = 0.2
-rectangulos = np.where(res >= umbral)
 
-for i in zip(*rectangulos[::-1]):
-    print(i)
-    cv2.rectangle(images, i, (i[0] + w, i[1] + h), (0,255,0),1)
-
-cv2.namedWindow("resultado",cv2.WINDOW_NORMAL)   
-cv2.imshow("resultado",images )
-
-cv2.waitKey()
-cv2.destroyAllWindows()
+abrir()    
